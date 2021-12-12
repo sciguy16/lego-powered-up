@@ -1119,6 +1119,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "read-motor-positions"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "lego-powered-up",
+]
+
+[[package]]
 name = "redox_syscall"
 version = "0.2.10"
 source = "registry+https://github.com/rust-lang/crates.io-index"

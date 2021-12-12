@@ -346,7 +346,7 @@ impl NotificationMessage {
             FwUpdateLockMemory(_) => todo!(),
             FwUpdateLockStatusRequest => todo!(),
             FwLockStatus(_) => todo!(),
-            PortInformationRequest(_) => todo!(),
+            PortInformationRequest(req) => req.serialise(),
             PortModeInformationRequest(_) => {
                 todo!()
             }
@@ -851,8 +851,8 @@ pub enum LockStatus {
 
 #[derive(Copy, Clone, Debug, PartialEq, Eq)]
 pub struct InformationRequest {
-    port_id: u8,
-    information_type: InformationType,
+    pub port_id: u8,
+    pub information_type: InformationType,
 }
 
 impl InformationRequest {
@@ -863,6 +863,10 @@ impl InformationRequest {
             port_id,
             information_type,
         })
+    }
+
+    pub(crate) fn serialise(&self) -> Vec<u8> {
+        todo!()
     }
 }
 

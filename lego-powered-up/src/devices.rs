@@ -5,7 +5,7 @@
 //! Definitions for the various devices which can attach to hubs, e.g. motors
 
 use crate::error::{Error, Result};
-use crate::notifications::Power;
+use crate::notifications::{InformationRequest, InformationType, Power};
 use crate::{hubs::Port, HubManagerMessage, NotificationMessage};
 use btleplug::api::BDAddr;
 use crossbeam_channel::{bounded, Sender};
@@ -23,6 +23,11 @@ pub trait Device: Debug + Send + Sync {
         ))
     }
     fn start_speed(&mut self, _speed: i8, _max_power: Power) -> Result<()> {
+        Err(Error::NotImplementedError(
+            "Not implemented for type".to_string(),
+        ))
+    }
+    fn read_position(&mut self) -> Result<i32> {
         Err(Error::NotImplementedError(
             "Not implemented for type".to_string(),
         ))
@@ -177,6 +182,16 @@ impl Device for Motor {
                 subcommand,
             });
         self.send(msg)
+    }
+
+    fn read_position(&mut self) -> Result<i32> {
+        let msg =
+            NotificationMessage::PortInformationRequest(InformationRequest {
+                port_id: self.port_id,
+                information_type: InformationType::PortValue,
+            });
+        self.send(msg)?;
+        Ok(4)
     }
 }
 
