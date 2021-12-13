@@ -866,7 +866,13 @@ impl InformationRequest {
     }
 
     pub(crate) fn serialise(&self) -> Vec<u8> {
-        todo!()
+        vec![
+            5, // length
+            0, // hub id (unused)
+            MessageType::PortInformationRequest as u8,
+            self.port_id,
+            self.information_type as u8,
+        ]
     }
 }
 
@@ -1425,7 +1431,7 @@ impl PortOutputCommandFormat {
                     profile,
                 ]
             }
-            WriteDirectModeData(data) => data.serialise(&self),
+            WriteDirectModeData(data) => data.serialise(self),
             _ => todo!(),
         }
     }
@@ -2311,5 +2317,25 @@ mod test {
         correct[0] = correct.len() as u8;
 
         assert_eq!(&serialised, correct);
+    }
+
+    #[test]
+    fn serialise_information_request() {
+        init();
+
+        let req = InformationRequest {
+            port_id: 1,
+            information_type: InformationType::PortValue,
+        };
+        let serialised = req.serialise();
+        let correct = vec![
+            // header
+            5,    // length
+            0,    // hub id (unused)
+            0x21, // MessageType::PortInformationRequest
+            1,    // port_id,
+            0,    // information type
+        ];
+        assert_eq!(serialised, correct);
     }
 }

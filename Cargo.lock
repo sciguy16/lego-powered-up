@@ -1123,6 +1123,7 @@ name = "read-motor-positions"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "env_logger",
  "lego-powered-up",
 ]
 

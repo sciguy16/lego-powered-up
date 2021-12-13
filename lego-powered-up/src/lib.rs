@@ -599,6 +599,9 @@ impl HubManager {
                             NotificationMessage::HubAttachedIo(io) => {
                                 hub.process_io_event(io);
                             }
+                            NotificationMessage::PortValueSingle(val) => {
+                                println!("PORT VALUE: {:?}", val);
+                            }
                             _ => {}
                         }
                     } else {

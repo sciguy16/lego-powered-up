@@ -5,6 +5,7 @@ use lego_powered_up::PoweredUp;
 use std::{thread::sleep, time::Duration};
 
 fn main() -> anyhow::Result<()> {
+    env_logger::init();
     println!("Listening for hubs...");
     let pu = PoweredUp::init()?;
     let hub = pu.wait_for_hub()?;
@@ -20,7 +21,7 @@ fn main() -> anyhow::Result<()> {
     let mut motor_a = hub.port(lego_powered_up::hubs::Port::A)?;
     let mut motor_b = hub.port(lego_powered_up::hubs::Port::B)?;
 
-    let upper = 20;
+    let upper = 2;
     for count in 0..upper {
         let pos_a = motor_a.read_position()?;
         let pos_b = motor_b.read_position()?;
